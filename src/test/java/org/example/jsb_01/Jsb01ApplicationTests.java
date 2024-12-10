@@ -109,4 +109,22 @@ class Jsb01ApplicationTests {
 		assertThat(bySubjectAndContent.getCreateDate()).isEqualTo(q1.getCreateDate());
 	}
 
+	@Test
+	@Transactional
+	@DisplayName("findBySubjectLike 테스트")
+	void test05() {
+		//given
+		Question q1 = new Question();
+		q1.setSubject("sbb가 무엇인가요?");
+		q1.setContent("sbb에 대해서 알고 싶습니다.");
+		q1.setCreateDate(LocalDateTime.now());
+		this.questionRepository.save(q1);
+
+		//when
+		List<Question> bySubjectLike = questionRepository.findBySubjectLike("sbb%");
+
+		//then
+		assertThat(bySubjectLike.getFirst().getContent()).isEqualTo(q1.getContent());
+	}
+
 }
