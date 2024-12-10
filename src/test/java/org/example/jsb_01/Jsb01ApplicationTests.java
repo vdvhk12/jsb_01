@@ -89,4 +89,24 @@ class Jsb01ApplicationTests {
 		assertThat(bySubject.getContent()).isEqualTo(q1.getContent());
 	}
 
+	@Test
+	@Transactional
+	@DisplayName("findBySubjectAndContent 테스트")
+	void test04() {
+		//given
+		Question q1 = new Question();
+		q1.setSubject("sbb가 무엇인가요?");
+		q1.setContent("sbb에 대해서 알고 싶습니다.");
+		q1.setCreateDate(LocalDateTime.now());
+		this.questionRepository.save(q1);
+
+		//when
+		Question bySubjectAndContent = questionRepository.findBySubjectAndContent("sbb가 무엇인가요?",
+			"sbb에 대해서 알고 싶습니다.");
+
+		//then
+		assertThat(bySubjectAndContent.getContent()).isEqualTo(q1.getContent());
+		assertThat(bySubjectAndContent.getCreateDate()).isEqualTo(q1.getCreateDate());
+	}
+
 }
