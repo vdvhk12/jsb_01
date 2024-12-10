@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import org.example.jsb_01.repository.AnswerRepository;
 import org.example.jsb_01.repository.QuestionRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,9 @@ class Jsb01ApplicationTests {
 
 	@Autowired
 	private QuestionRepository questionRepository;
+
+	@Autowired
+	private AnswerRepository answerRepository;
 
 	@Test
 	@Transactional
@@ -173,6 +177,32 @@ class Jsb01ApplicationTests {
 
 		//then
 		assertThat(questionRepository.count()).isEqualTo(1);
+	}
+
+	@Test
+	@Transactional
+	@DisplayName("Answer CREATE, findById 테스트")
+	void test08() {
+		//given
+		Question q1 = new Question();
+		q1.setSubject("스프링부트 모델 질문입니다.");
+		q1.setContent("id는 자동으로 생성되나요?");
+		q1.setCreateDate(LocalDateTime.now());
+		this.questionRepository.save(q1);
+
+		Question question = questionRepository.findById(q1.getId()).orElse(null);
+
+		Answer a1 = new Answer();
+		a1.setContent("네 자동으로 생성됩니다.");
+		a1.setCreateDate(LocalDateTime.now());
+		a1.setQuestion(question);
+		this.answerRepository.save(a1);
+
+		//when
+		Optional<Answer> byId = answerRepository.findById(a1.getId());
+
+		//then
+		byId.ifPresent(answer -> assertThat(answer.getContent()).isEqualTo(a1.getContent()));
 	}
 
 }
