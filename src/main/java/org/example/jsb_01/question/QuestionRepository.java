@@ -1,7 +1,6 @@
-package org.example.jsb_01.repository;
+package org.example.jsb_01.question;
 
 import java.util.List;
-import org.example.jsb_01.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
