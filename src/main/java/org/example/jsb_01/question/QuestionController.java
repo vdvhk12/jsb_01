@@ -3,6 +3,7 @@ package org.example.jsb_01.question;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.jsb_01.answer.AnswerForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,7 +27,7 @@ public class QuestionController {
     }
 
     @GetMapping("/detail/{id}")
-    public String detail(@PathVariable("id") Long id, Model model) {
+    public String detail(@PathVariable("id") Long id, Model model, AnswerForm answerForm) {
         System.out.println("id = " + id);
         QuestionDto question = questionService.getQuestion(id);
         model.addAttribute("question", question);
