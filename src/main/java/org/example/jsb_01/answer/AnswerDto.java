@@ -12,13 +12,15 @@ public class AnswerDto {
 
     private Long id;
     private String content;
-    private LocalDateTime createdDate;
+    private LocalDateTime createDate;
+    private Long questionId;
 
-    public static AnswerDto from(Answer answer) {
+    public static AnswerDto toDto(Answer answer) {
         return AnswerDto.builder()
             .id(answer.getId())
             .content(answer.getContent())
-            .createdDate(answer.getCreateDate())
+            .createDate(answer.getCreateDate())
+            .questionId(answer.getQuestion().getId())
             .build();
     }
 }

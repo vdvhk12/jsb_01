@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.example.jsb_01.answer.Answer;
@@ -29,17 +30,19 @@ class Jsb01ApplicationTests {
 	@DisplayName("findById 테스트")
 	void test01() {
 	    //given
-		Question q1 = new Question();
-		q1.setSubject("sbb가 무엇인가요?");
-		q1.setContent("sbb에 대해서 알고 싶습니다.");
-		q1.setCreateDate(LocalDateTime.now());
-		this.questionRepository.save(q1);
+		Question q1 = Question.builder()
+			.subject("sbb가 무엇인가요?")
+			.content("sbb에 대해서 알고 싶습니다.")
+			.createDate(LocalDateTime.now())
+			.build();
+		questionRepository.save(q1);
 
-		Question q2 = new Question();
-		q2.setSubject("스프링부트 모델 질문입니다.");
-		q2.setContent("id는 자동으로 생성되나요?");
-		q2.setCreateDate(LocalDateTime.now());
-		this.questionRepository.save(q2);
+		Question q2 = Question.builder()
+			.subject("스프링부트 모델 질문입니다.")
+			.content("id는 자동으로 생성되나요?")
+			.createDate(LocalDateTime.now())
+			.build();
+		questionRepository.save(q2);
 
 		//when
 		Optional<Question> byId1 = questionRepository.findById(q1.getId());
@@ -58,23 +61,25 @@ class Jsb01ApplicationTests {
 	@DisplayName("findAll 테스트")
 	void test02() {
 		//given
-		Question q1 = new Question();
-		q1.setSubject("sbb가 무엇인가요?");
-		q1.setContent("sbb에 대해서 알고 싶습니다.");
-		q1.setCreateDate(LocalDateTime.now());
-		this.questionRepository.save(q1);
+		Question q1 = Question.builder()
+			.subject("sbb가 무엇인가요?")
+			.content("sbb에 대해서 알고 싶습니다.")
+			.createDate(LocalDateTime.now())
+			.build();
+		questionRepository.save(q1);
 
-		Question q2 = new Question();
-		q2.setSubject("스프링부트 모델 질문입니다.");
-		q2.setContent("id는 자동으로 생성되나요?");
-		q2.setCreateDate(LocalDateTime.now());
-		this.questionRepository.save(q2);
+		Question q2 = Question.builder()
+			.subject("스프링부트 모델 질문입니다.")
+			.content("id는 자동으로 생성되나요?")
+			.createDate(LocalDateTime.now())
+			.build();
+		questionRepository.save(q2);
 
 		//when
 		List<Question> all = questionRepository.findAll();
 
 		//then
-		assertThat(all.size()).isEqualTo(2);
+		assertThat(all.size()).isEqualTo(5);
 	}
 
 	@Test
@@ -82,14 +87,15 @@ class Jsb01ApplicationTests {
 	@DisplayName("findBySubject 테스트")
 	void test03() {
 		//given
-		Question q1 = new Question();
-		q1.setSubject("sbb가 무엇인가요?");
-		q1.setContent("sbb에 대해서 알고 싶습니다.");
-		q1.setCreateDate(LocalDateTime.now());
-		this.questionRepository.save(q1);
+		Question q1 = Question.builder()
+			.subject("테스트 관련 질문입니다.")
+			.content("TDD를 현업에서 많이 하나요?")
+			.createDate(LocalDateTime.now())
+			.build();
+		questionRepository.save(q1);
 
 		//when
-		Question bySubject = questionRepository.findBySubject("sbb가 무엇인가요?");
+		Question bySubject = questionRepository.findBySubject("테스트 관련 질문입니다.");
 
 		//then
 		assertThat(bySubject.getContent()).isEqualTo(q1.getContent());
@@ -100,15 +106,16 @@ class Jsb01ApplicationTests {
 	@DisplayName("findBySubjectAndContent 테스트")
 	void test04() {
 		//given
-		Question q1 = new Question();
-		q1.setSubject("sbb가 무엇인가요?");
-		q1.setContent("sbb에 대해서 알고 싶습니다.");
-		q1.setCreateDate(LocalDateTime.now());
-		this.questionRepository.save(q1);
+		Question q1 = Question.builder()
+			.subject("테스트 관련 질문입니다.")
+			.content("TDD를 현업에서 많이 하나요?")
+			.createDate(LocalDateTime.now())
+			.build();
+		questionRepository.save(q1);
 
 		//when
-		Question bySubjectAndContent = questionRepository.findBySubjectAndContent("sbb가 무엇인가요?",
-			"sbb에 대해서 알고 싶습니다.");
+		Question bySubjectAndContent = questionRepository.findBySubjectAndContent("테스트 관련 질문입니다.",
+			"TDD를 현업에서 많이 하나요?");
 
 		//then
 		assertThat(bySubjectAndContent.getContent()).isEqualTo(q1.getContent());
@@ -120,14 +127,15 @@ class Jsb01ApplicationTests {
 	@DisplayName("findBySubjectLike 테스트")
 	void test05() {
 		//given
-		Question q1 = new Question();
-		q1.setSubject("sbb가 무엇인가요?");
-		q1.setContent("sbb에 대해서 알고 싶습니다.");
-		q1.setCreateDate(LocalDateTime.now());
-		this.questionRepository.save(q1);
+		Question q1 = Question.builder()
+			.subject("스프링부트 모델 질문입니다.")
+			.content("id는 자동으로 생성되나요?")
+			.createDate(LocalDateTime.now())
+			.build();
+		questionRepository.save(q1);
 
 		//when
-		List<Question> bySubjectLike = questionRepository.findBySubjectLike("sbb%");
+		List<Question> bySubjectLike = questionRepository.findBySubjectLike("스프링부트%");
 
 		//then
 		assertThat(bySubjectLike.getFirst().getContent()).isEqualTo(q1.getContent());
@@ -138,11 +146,12 @@ class Jsb01ApplicationTests {
 	@DisplayName("UPDATE 테스트")
 	void test06() {
 		//given
-		Question q1 = new Question();
-		q1.setSubject("sbb가 무엇인가요?");
-		q1.setContent("sbb에 대해서 알고 싶습니다.");
-		q1.setCreateDate(LocalDateTime.now());
-		this.questionRepository.save(q1);
+		Question q1 = Question.builder()
+			.subject("스프링부트 모델 질문입니다.")
+			.content("id는 자동으로 생성되나요?")
+			.createDate(LocalDateTime.now())
+			.build();
+		questionRepository.save(q1);
 
 		//when
 		questionRepository.findById(q1.getId()).ifPresent(q -> {
@@ -160,25 +169,27 @@ class Jsb01ApplicationTests {
 	@DisplayName("DELETE 테스트")
 	void test07() {
 		//given
-		Question q1 = new Question();
-		q1.setSubject("sbb가 무엇인가요?");
-		q1.setContent("sbb에 대해서 알고 싶습니다.");
-		q1.setCreateDate(LocalDateTime.now());
-		this.questionRepository.save(q1);
+		Question q1 = Question.builder()
+			.subject("sbb가 무엇인가요?")
+			.content("sbb에 대해서 알고 싶습니다.")
+			.createDate(LocalDateTime.now())
+			.build();
+		questionRepository.save(q1);
 
-		Question q2 = new Question();
-		q2.setSubject("스프링부트 모델 질문입니다.");
-		q2.setContent("id는 자동으로 생성되나요?");
-		q2.setCreateDate(LocalDateTime.now());
-		this.questionRepository.save(q2);
+		Question q2 = Question.builder()
+			.subject("스프링부트 모델 질문입니다.")
+			.content("id는 자동으로 생성되나요?")
+			.createDate(LocalDateTime.now())
+			.build();
+		questionRepository.save(q2);
 
 		//when
-		assertThat(questionRepository.count()).isEqualTo(2);
+		assertThat(questionRepository.count()).isEqualTo(5);
 		Optional<Question> byId = questionRepository.findById(q1.getId());
         byId.ifPresent(question -> questionRepository.delete(question));
 
 		//then
-		assertThat(questionRepository.count()).isEqualTo(1);
+		assertThat(questionRepository.count()).isEqualTo(4);
 	}
 
 	@Test
@@ -186,19 +197,21 @@ class Jsb01ApplicationTests {
 	@DisplayName("Answer CREATE, findById 테스트")
 	void test08() {
 		//given
-		Question q1 = new Question();
-		q1.setSubject("스프링부트 모델 질문입니다.");
-		q1.setContent("id는 자동으로 생성되나요?");
-		q1.setCreateDate(LocalDateTime.now());
-		this.questionRepository.save(q1);
+		Question q1 = Question.builder()
+			.subject("스프링부트 모델 질문입니다.")
+			.content("id는 자동으로 생성되나요?")
+			.createDate(LocalDateTime.now())
+			.build();
+		questionRepository.save(q1);
 
 		Question question = questionRepository.findById(q1.getId()).orElse(null);
 
-		Answer a1 = new Answer();
-		a1.setContent("네 자동으로 생성됩니다.");
-		a1.setCreateDate(LocalDateTime.now());
-		a1.setQuestion(question);
-		this.answerRepository.save(a1);
+		Answer a1 = Answer.builder()
+			.content("네 자동으로 생성됩니다.")
+			.createDate(LocalDateTime.now())
+			.question(question)
+			.build();
+		answerRepository.save(a1);
 
 		//when
 		Optional<Answer> byId = answerRepository.findById(a1.getId());
@@ -212,19 +225,21 @@ class Jsb01ApplicationTests {
 	@DisplayName("Answer-Question Read 테스트")
 	void test09() {
 		//given
-		Question q1 = new Question();
-		q1.setSubject("스프링부트 모델 질문입니다.");
-		q1.setContent("id는 자동으로 생성되나요?");
-		q1.setCreateDate(LocalDateTime.now());
-		this.questionRepository.save(q1);
+		Question q1 = Question.builder()
+			.subject("스프링부트 모델 질문입니다.")
+			.content("id는 자동으로 생성되나요?")
+			.createDate(LocalDateTime.now())
+			.build();
+		questionRepository.save(q1);
 
 		Question question = questionRepository.findById(q1.getId()).orElse(null);
 
-		Answer a1 = new Answer();
-		a1.setContent("네 자동으로 생성됩니다.");
-		a1.setCreateDate(LocalDateTime.now());
-		a1.setQuestion(question);
-		this.answerRepository.save(a1);
+		Answer a1 = Answer.builder()
+			.content("네 자동으로 생성됩니다.")
+			.createDate(LocalDateTime.now())
+			.question(question)
+			.build();
+		answerRepository.save(a1);
 
 		//when
 		Optional<Answer> byId = answerRepository.findById(a1.getId());
@@ -238,17 +253,22 @@ class Jsb01ApplicationTests {
 	@DisplayName("Question-Answer Read 테스트")
 	void test10() {
 		//given
-		Question q1 = new Question();
-		q1.setSubject("스프링부트 모델 질문입니다.");
-		q1.setContent("id는 자동으로 생성되나요?");
-		q1.setCreateDate(LocalDateTime.now());
-		this.questionRepository.save(q1);
+		Question q1 = Question.builder()
+			.subject("스프링부트 모델 질문입니다.")
+			.content("id는 자동으로 생성되나요?")
+			.createDate(LocalDateTime.now())
+			.answerList(new ArrayList<>())
+			.build();
+		questionRepository.save(q1);
 
-		Answer a1 = new Answer();
-		a1.setContent("네 자동으로 생성됩니다.");
-		a1.setCreateDate(LocalDateTime.now());
-		a1.setQuestion(q1);
-		this.answerRepository.save(a1);
+		Question question = questionRepository.findById(q1.getId()).orElse(null);
+
+		Answer a1 = Answer.builder()
+			.content("네 자동으로 생성됩니다.")
+			.createDate(LocalDateTime.now())
+			.question(question)
+			.build();
+		answerRepository.save(a1);
 
 		q1.getAnswerList().add(a1); // 이 부분을 명시적으로 작성해야하는지? 작성을 안했을 때는 answerList의 사이즈가 0이 됨.
 
@@ -257,6 +277,7 @@ class Jsb01ApplicationTests {
 
 		//then
 		byId.ifPresent(q -> {
+			System.err.println("q.getId() = " + q.getId());
 			List<Answer> answerList = byId.get().getAnswerList();
 			assertThat(answerList.size()).isEqualTo(1);
 			assertThat(answerList.getFirst().getContent()).isEqualTo("네 자동으로 생성됩니다.");

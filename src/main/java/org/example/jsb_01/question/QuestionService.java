@@ -13,11 +13,11 @@ public class QuestionService {
 
     public List<QuestionDto> getList() {
         return questionRepository.findAll().stream()
-            .map(QuestionDto::from).toList();
+            .map(QuestionDto::toDto).toList();
     }
 
     public QuestionDto getQuestion(Long id) {
-        return questionRepository.findById(id).map(QuestionDto::from)
+        return questionRepository.findById(id).map(QuestionDto::toDto)
             .orElseThrow(() -> new DataNotFoundException("question not fount"));
     }
 
