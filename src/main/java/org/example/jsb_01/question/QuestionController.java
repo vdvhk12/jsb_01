@@ -14,8 +14,9 @@ public class QuestionController {
 
     @GetMapping("/question/list")
     public String list(Model model) {
-        List<Question> questions = questionRepository.findAll();
-        model.addAttribute("questions", questions);
+        List<QuestionDto> questionDtos = questionRepository.findAll().stream()
+            .map(QuestionDto::from).toList();
+        model.addAttribute("questions", questionDtos);
         return "question_list";
     }
 }
