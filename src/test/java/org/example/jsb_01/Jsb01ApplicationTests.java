@@ -149,4 +149,30 @@ class Jsb01ApplicationTests {
 			.ifPresent(question -> assertThat(question.getSubject()).isEqualTo("수정된 제목"));
 	}
 
+	@Test
+	@Transactional
+	@DisplayName("DELETE 테스트")
+	void test07() {
+		//given
+		Question q1 = new Question();
+		q1.setSubject("sbb가 무엇인가요?");
+		q1.setContent("sbb에 대해서 알고 싶습니다.");
+		q1.setCreateDate(LocalDateTime.now());
+		this.questionRepository.save(q1);
+
+		Question q2 = new Question();
+		q2.setSubject("스프링부트 모델 질문입니다.");
+		q2.setContent("id는 자동으로 생성되나요?");
+		q2.setCreateDate(LocalDateTime.now());
+		this.questionRepository.save(q2);
+
+		//when
+		assertThat(questionRepository.count()).isEqualTo(2);
+		Optional<Question> byId = questionRepository.findById(q1.getId());
+        byId.ifPresent(question -> questionRepository.delete(question));
+
+		//then
+		assertThat(questionRepository.count()).isEqualTo(1);
+	}
+
 }
