@@ -40,4 +40,13 @@ public class Question {
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Answer> answerList = new ArrayList<>();
+
+    public static Question create(String subject, String content) {
+        return Question.builder()
+            .subject(subject)
+            .content(content)
+            .createDate(LocalDateTime.now())
+            .answerList(new ArrayList<>())
+            .build();
+    }
 }

@@ -21,4 +21,8 @@ public class QuestionService {
             .orElseThrow(() -> new DataNotFoundException("question not fount"));
     }
 
+    public void createQuestion(String subject, String content) {
+        questionRepository.save(Question.create(subject, content));
+    }
+
 }
