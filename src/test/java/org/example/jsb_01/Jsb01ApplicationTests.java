@@ -205,4 +205,60 @@ class Jsb01ApplicationTests {
 		byId.ifPresent(answer -> assertThat(answer.getContent()).isEqualTo(a1.getContent()));
 	}
 
+	@Test
+	@Transactional
+	@DisplayName("Answer-Question Read 테스트")
+	void test09() {
+		//given
+		Question q1 = new Question();
+		q1.setSubject("스프링부트 모델 질문입니다.");
+		q1.setContent("id는 자동으로 생성되나요?");
+		q1.setCreateDate(LocalDateTime.now());
+		this.questionRepository.save(q1);
+
+		Question question = questionRepository.findById(q1.getId()).orElse(null);
+
+		Answer a1 = new Answer();
+		a1.setContent("네 자동으로 생성됩니다.");
+		a1.setCreateDate(LocalDateTime.now());
+		a1.setQuestion(question);
+		this.answerRepository.save(a1);
+
+		//when
+		Optional<Answer> byId = answerRepository.findById(a1.getId());
+
+		//then
+		byId.ifPresent(answer -> assertThat(answer.getQuestion().getSubject()).isEqualTo(q1.getSubject()));
+	}
+
+	@Test
+	@Transactional
+	@DisplayName("Question-Answer Read 테스트")
+	void test10() {
+		//given
+		Question q1 = new Question();
+		q1.setSubject("스프링부트 모델 질문입니다.");
+		q1.setContent("id는 자동으로 생성되나요?");
+		q1.setCreateDate(LocalDateTime.now());
+		this.questionRepository.save(q1);
+
+		Answer a1 = new Answer();
+		a1.setContent("네 자동으로 생성됩니다.");
+		a1.setCreateDate(LocalDateTime.now());
+		a1.setQuestion(q1);
+		this.answerRepository.save(a1);
+
+		q1.getAnswerList().add(a1); // 이 부분을 명시적으로 작성해야하는지? 작성을 안했을 때는 answerList의 사이즈가 0이 됨.
+
+		//when
+		Optional<Question> byId = questionRepository.findById(q1.getId());
+
+		//then
+		byId.ifPresent(q -> {
+			List<Answer> answerList = byId.get().getAnswerList();
+			assertThat(answerList.size()).isEqualTo(1);
+			assertThat(answerList.getFirst().getContent()).isEqualTo("네 자동으로 생성됩니다.");
+		});
+	}
+
 }
