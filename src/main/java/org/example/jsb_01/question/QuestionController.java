@@ -10,13 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class QuestionController {
 
-    private final QuestionRepository questionRepository;
+    private final QuestionService questionService;
 
     @GetMapping("/question/list")
     public String list(Model model) {
-        List<QuestionDto> questionDtos = questionRepository.findAll().stream()
-            .map(QuestionDto::from).toList();
-        model.addAttribute("questions", questionDtos);
+        List<QuestionDto> questions = questionService.getList();
+        model.addAttribute("questions", questions);
         return "question_list";
     }
 }
