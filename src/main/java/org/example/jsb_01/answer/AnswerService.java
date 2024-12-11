@@ -32,4 +32,8 @@ public class AnswerService {
             .orElseThrow(() -> new DataNotFoundException("answer not found"));
         answerRepository.save(answer.modify(answerForm.getContent()));
     }
+
+    public void deleteAnswer(Long id) {
+        answerRepository.deleteById(id);
+    }
 }

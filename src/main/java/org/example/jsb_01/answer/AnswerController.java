@@ -58,7 +58,7 @@ public class AnswerController {
     @PostMapping("/modify/{id}")
     public String modify(@Valid AnswerForm answerForm, BindingResult bindingResult,
         @PathVariable("id") Long id, Principal principal) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return "answer_form";
         }
         AnswerDto answer = answerService.getAnswer(id);
@@ -66,6 +66,17 @@ public class AnswerController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
         answerService.modifyAnswer(id, answerForm);
+        return String.format("redirect:/question/detail/%s", answer.getQuestionId());
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") Long id, Principal principal) {
+        AnswerDto answer = answerService.getAnswer(id);
+        if(!answer.getAuthor().getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
+        }
+        answerService.deleteAnswer(id);
         return String.format("redirect:/question/detail/%s", answer.getQuestionId());
     }
 }
