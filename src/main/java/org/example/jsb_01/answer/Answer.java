@@ -5,8 +5,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,12 +44,16 @@ public class Answer {
     @ManyToOne
     private Question question;
 
+    @ManyToMany
+    Set<SiteUser> voter;
+
     public static Answer create(Question question, String content, SiteUser author) {
         return Answer.builder()
             .content(content)
             .createDate(LocalDateTime.now())
             .question(question)
             .author(author)
+            .voter(new HashSet<>())
             .build();
     }
 
@@ -58,6 +65,7 @@ public class Answer {
             .modifyDate(LocalDateTime.now())
             .author(this.author)
             .question(this.question)
+            .voter(this.voter)
             .build();
     }
 }
