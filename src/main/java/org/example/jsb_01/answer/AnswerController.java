@@ -39,8 +39,8 @@ public class AnswerController {
             return "question_detail";
         }
 
-        answerService.createAnswer(question, answerForm.getContent(), siteUser);
-        return String.format("redirect:/question/detail/%s", id);
+        AnswerDto answer = answerService.createAnswer(question, answerForm.getContent(), siteUser);
+        return String.format("redirect:/question/detail/%s#answer_%s", id, answer.getId());
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -66,7 +66,7 @@ public class AnswerController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
         answerService.modifyAnswer(id, answerForm);
-        return String.format("redirect:/question/detail/%s", answer.getQuestionId());
+        return String.format("redirect:/question/detail/%s#answer_%s", answer.getQuestionId(), answer.getId());
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -86,6 +86,6 @@ public class AnswerController {
         AnswerDto answer = answerService.getAnswer(id);
         SiteUserDto siteUser = siteUserService.getSiteUser(principal.getName());
         answerService.vote(id, siteUser);
-        return String.format("redirect:/question/detail/%s", answer.getQuestionId());
+        return String.format("redirect:/question/detail/%s#answer_%s", answer.getQuestionId(), answer.getId());
     }
 }

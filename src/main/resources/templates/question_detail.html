@@ -40,6 +40,7 @@
 	    th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h5>
 	<!-- 답변 반복 시작 -->
 	<div class="card my-3" th:each="answer : ${question.answerList}">
+		<a th:id="|answer_${answer.id}|"></a>
 		<div class="card-body">
 			<div class="card-text" style="white-space: pre-line;" th:text="${answer.content}"></div>
 			<div class="d-flex justify-content-end">
@@ -75,12 +76,8 @@
 	<!-- 답변 작성 -->
 	<form th:action="@{|/answer/create/${question.id}|}" th:object="${answerForm}" method="post" class="my-3">
 		<div th:replace="~{form_errors :: formErrorsFragment}"></div>
-		<label>
-			<textarea sec:authorize="isAnonymous()" disabled th:field="*{content}" class="form-control" rows="10"></textarea>
-		</label>
-		<label>
-			<textarea sec:authorize="isAuthenticated()" th:field="*{content}" class="form-control" rows="10"></textarea>
-		</label>
+		<textarea sec:authorize="isAnonymous()" disabled th:field="*{content}" class="form-control" rows="10"></textarea>
+		<textarea sec:authorize="isAuthenticated()" th:field="*{content}" class="form-control" rows="10"></textarea>
 		<input type="submit" value="답변등록" class="btn btn-primary my-2">
 	</form>
 </div>

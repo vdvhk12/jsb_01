@@ -15,11 +15,12 @@ public class AnswerService {
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
 
-    public void createAnswer(QuestionDto questionDto, String content, SiteUserDto siteUserDto) {
+    public AnswerDto createAnswer(QuestionDto questionDto, String content, SiteUserDto siteUserDto) {
         Question question = questionRepository.findById(questionDto.getId())
             .orElseThrow(() -> new DataNotFoundException("Question with ID " + questionDto.getId() + " not found"));
 
-        answerRepository.save(Answer.create(question, content, SiteUserDto.fromDto(siteUserDto)));
+        return AnswerDto.toDto(answerRepository.save(
+            Answer.create(question, content, SiteUserDto.fromDto(siteUserDto))));
     }
 
     public AnswerDto getAnswer(Long id) {
