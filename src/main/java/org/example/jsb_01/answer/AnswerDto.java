@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.jsb_01.user.SiteUserDto;
 
 @Getter
 @Setter
@@ -13,6 +14,7 @@ public class AnswerDto {
     private Long id;
     private String content;
     private LocalDateTime createDate;
+    private SiteUserDto author;
     private Long questionId;
 
     public static AnswerDto toDto(Answer answer) {
@@ -20,6 +22,7 @@ public class AnswerDto {
             .id(answer.getId())
             .content(answer.getContent())
             .createDate(answer.getCreateDate())
+            .author(SiteUserDto.toDto(answer.getAuthor()))
             .questionId(answer.getQuestion().getId())
             .build();
     }

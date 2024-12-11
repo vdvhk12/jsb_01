@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.jsb_01.answer.AnswerDto;
+import org.example.jsb_01.user.SiteUserDto;
 
 @Getter
 @Setter
@@ -16,6 +17,7 @@ public class QuestionDto {
     private String subject;
     private String content;
     private LocalDateTime createDate;
+    private SiteUserDto author;
     private List<AnswerDto> answerList;
 
     // Question 엔티티를 DTO로 변환하는 메서드
@@ -25,6 +27,7 @@ public class QuestionDto {
             .subject(question.getSubject())
             .content(question.getContent())
             .createDate(question.getCreateDate())
+            .author(SiteUserDto.toDto(question.getAuthor()))
             .answerList(question.getAnswerList().stream()
                 .map(AnswerDto::toDto)
                 .toList())

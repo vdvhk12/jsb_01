@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.jsb_01.answer.Answer;
+import org.example.jsb_01.user.SiteUser;
 
 @Getter
 @Setter
@@ -38,14 +40,18 @@ public class Question {
 
     private LocalDateTime createDate;
 
+    @ManyToOne
+    private SiteUser author;
+
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Answer> answerList = new ArrayList<>();
 
-    public static Question create(String subject, String content) {
+    public static Question create(String subject, String content, SiteUser siteUser) {
         return Question.builder()
             .subject(subject)
             .content(content)
             .createDate(LocalDateTime.now())
+            .author(siteUser)
             .answerList(new ArrayList<>())
             .build();
     }

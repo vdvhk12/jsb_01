@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.jsb_01.DataNotFoundException;
+import org.example.jsb_01.user.SiteUserDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,8 +29,8 @@ public class QuestionService {
             .orElseThrow(() -> new DataNotFoundException("question not fount"));
     }
 
-    public void createQuestion(String subject, String content) {
-        questionRepository.save(Question.create(subject, content));
+    public void createQuestion(String subject, String content, SiteUserDto siteUserDto) {
+        questionRepository.save(Question.create(subject, content, SiteUserDto.fromDto(siteUserDto)));
     }
 
 }

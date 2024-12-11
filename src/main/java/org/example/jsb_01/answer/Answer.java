@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.jsb_01.question.Question;
+import org.example.jsb_01.user.SiteUser;
 
 @Getter
 @Setter
@@ -33,13 +34,17 @@ public class Answer {
     private LocalDateTime createDate;
 
     @ManyToOne
+    private SiteUser author;
+
+    @ManyToOne
     private Question question;
 
-    public static Answer create(Question question, String content) {
+    public static Answer create(Question question, String content, SiteUser author) {
         return Answer.builder()
             .content(content)
             .createDate(LocalDateTime.now())
             .question(question)
+            .author(author)
             .build();
     }
 }

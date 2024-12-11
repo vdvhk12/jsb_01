@@ -20,4 +20,12 @@ public class SiteUserDto {
             .email(siteUser.getEmail())
             .build();
     }
+
+    public static SiteUser fromDto(SiteUserDto siteUserDto) {
+        return SiteUser.builder()
+            .id(siteUserDto.getId())
+            .username(siteUserDto.getUsername())
+            .email(siteUserDto.getEmail())
+            .build();
+    }
 }

@@ -11,7 +11,6 @@ import org.example.jsb_01.answer.Answer;
 import org.example.jsb_01.answer.AnswerRepository;
 import org.example.jsb_01.question.Question;
 import org.example.jsb_01.question.QuestionRepository;
-import org.example.jsb_01.question.QuestionService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +24,6 @@ class Jsb01ApplicationTests {
 
 	@Autowired
 	private AnswerRepository answerRepository;
-    @Autowired
-    private QuestionService questionService;
 
 	@Test
 	@Transactional
@@ -64,6 +61,8 @@ class Jsb01ApplicationTests {
 	@DisplayName("findAll 테스트")
 	void test02() {
 		//given
+		long count = questionRepository.count();
+
 		Question q1 = Question.builder()
 			.subject("sbb가 무엇인가요?")
 			.content("sbb에 대해서 알고 싶습니다.")
@@ -82,7 +81,7 @@ class Jsb01ApplicationTests {
 		List<Question> all = questionRepository.findAll();
 
 		//then
-		assertThat(all.size()).isEqualTo(5);
+		assertThat(all.size()).isEqualTo(count + 2);
 	}
 
 	@Test
@@ -131,14 +130,14 @@ class Jsb01ApplicationTests {
 	void test05() {
 		//given
 		Question q1 = Question.builder()
-			.subject("스프링부트 모델 질문입니다.")
+			.subject("Like 테스트 입니다.")
 			.content("id는 자동으로 생성되나요?")
 			.createDate(LocalDateTime.now())
 			.build();
 		questionRepository.save(q1);
 
 		//when
-		List<Question> bySubjectLike = questionRepository.findBySubjectLike("스프링부트%");
+		List<Question> bySubjectLike = questionRepository.findBySubjectLike("Like%");
 
 		//then
 		assertThat(bySubjectLike.getFirst().getContent()).isEqualTo(q1.getContent());
@@ -172,6 +171,8 @@ class Jsb01ApplicationTests {
 	@DisplayName("DELETE 테스트")
 	void test07() {
 		//given
+		long count = questionRepository.count();
+
 		Question q1 = Question.builder()
 			.subject("sbb가 무엇인가요?")
 			.content("sbb에 대해서 알고 싶습니다.")
@@ -187,12 +188,12 @@ class Jsb01ApplicationTests {
 		questionRepository.save(q2);
 
 		//when
-		assertThat(questionRepository.count()).isEqualTo(5);
+		assertThat(questionRepository.count()).isEqualTo(count + 2);
 		Optional<Question> byId = questionRepository.findById(q1.getId());
         byId.ifPresent(question -> questionRepository.delete(question));
 
 		//then
-		assertThat(questionRepository.count()).isEqualTo(4);
+		assertThat(questionRepository.count()).isEqualTo(count + 1);
 	}
 
 	@Test
@@ -280,20 +281,22 @@ class Jsb01ApplicationTests {
 
 		//then
 		byId.ifPresent(q -> {
-			System.err.println("q.getId() = " + q.getId());
 			List<Answer> answerList = byId.get().getAnswerList();
 			assertThat(answerList.size()).isEqualTo(1);
 			assertThat(answerList.getFirst().getContent()).isEqualTo("네 자동으로 생성됩니다.");
 		});
 	}
 
-	@Test
-	@DisplayName("테스트용 더미 데이터 300개 생성")
-	void test11() {
-		for (int i = 1; i <= 300; i++) {
-			String subject = String.format("테스트 데이터입니다.:[%03d]", i);
-			questionService.createQuestion(subject, "테스트용");
-		}
-	}
+//	@Test
+//	@DisplayName("테스트용 더미 데이터 300개 생성")
+//	void test11() {
+//		SiteUser siteUser = SiteUser.create("dummy", "dummy", "dummy@gamil.com");
+//		siteUserRepository.save(siteUser);
+//
+//		for (int i = 1; i <= 300; i++) {
+//			String subject = String.format("테스트 데이터입니다.:[%03d]", i);
+//			questionService.createQuestion(subject, "테스트용", SiteUserDto.toDto(siteUser));
+//		}
+//	}
 
 }
