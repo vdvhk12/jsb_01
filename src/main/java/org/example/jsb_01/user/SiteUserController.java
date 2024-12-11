@@ -23,7 +23,7 @@ public class SiteUserController {
 
     @PostMapping("/signup")
     public String signup(@Valid SiteUserCreateForm form, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return "signup_form";
         }
 
@@ -33,17 +33,22 @@ public class SiteUserController {
         }
 
         try {
-            siteUserService.createSiteUser(form.getUsername(), form.getPassword1(), form.getEmail());
+            siteUserService.createSiteUser(form.getUsername(), form.getPassword1(),
+                form.getEmail());
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
             bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
             return "signup_form";
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             bindingResult.reject("signupFailed", e.getMessage());
             return "signup_form";
         }
-
         return "redirect:/";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login_form";
     }
 }
