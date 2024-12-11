@@ -11,6 +11,7 @@ import org.example.jsb_01.answer.Answer;
 import org.example.jsb_01.answer.AnswerRepository;
 import org.example.jsb_01.question.Question;
 import org.example.jsb_01.question.QuestionRepository;
+import org.example.jsb_01.question.QuestionService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ class Jsb01ApplicationTests {
 
 	@Autowired
 	private AnswerRepository answerRepository;
+    @Autowired
+    private QuestionService questionService;
 
 	@Test
 	@Transactional
@@ -282,6 +285,15 @@ class Jsb01ApplicationTests {
 			assertThat(answerList.size()).isEqualTo(1);
 			assertThat(answerList.getFirst().getContent()).isEqualTo("네 자동으로 생성됩니다.");
 		});
+	}
+
+	@Test
+	@DisplayName("테스트용 더미 데이터 300개 생성")
+	void test11() {
+		for (int i = 1; i <= 300; i++) {
+			String subject = String.format("테스트 데이터입니다.:[%03d]", i);
+			questionService.createQuestion(subject, "테스트용");
+		}
 	}
 
 }
