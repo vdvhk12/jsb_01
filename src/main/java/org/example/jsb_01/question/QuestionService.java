@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.jsb_01.DataNotFoundException;
+import org.example.jsb_01.user.SiteUser;
 import org.example.jsb_01.user.SiteUserDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,6 +43,13 @@ public class QuestionService {
 
     public void deleteQuestion(Long id) {
         questionRepository.deleteById(id);
+    }
+
+    public void vote(Long id, SiteUserDto siteUserDto) {
+        Question question = questionRepository.findById(id)
+            .orElseThrow(() -> new DataNotFoundException("question not fount"));
+        question.getVoter().add(SiteUserDto.fromDto(siteUserDto));
+        questionRepository.save(question);
     }
 
 }

@@ -6,11 +6,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,6 +51,9 @@ public class Question {
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Answer> answerList = new ArrayList<>();
 
+    @ManyToMany
+    Set<SiteUser> voter;
+
     public static Question create(String subject, String content, SiteUser siteUser) {
         return Question.builder()
             .subject(subject)
@@ -55,6 +61,7 @@ public class Question {
             .createDate(LocalDateTime.now())
             .author(siteUser)
             .answerList(new ArrayList<>())
+            .voter(new HashSet<>())
             .build();
     }
 
@@ -67,6 +74,7 @@ public class Question {
             .modifyDate(LocalDateTime.now())
             .author(this.author)
             .answerList(this.answerList)
+            .voter(this.voter)
             .build();
     }
 }

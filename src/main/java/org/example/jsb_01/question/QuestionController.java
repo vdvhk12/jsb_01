@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.example.jsb_01.answer.AnswerForm;
+import org.example.jsb_01.user.SiteUser;
 import org.example.jsb_01.user.SiteUserDto;
 import org.example.jsb_01.user.SiteUserService;
 import org.springframework.data.domain.Page;
@@ -99,5 +100,13 @@ public class QuestionController {
         }
         questionService.deleteQuestion(id);
         return "redirect:/";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/vote/{id}")
+    public String questionVote(@PathVariable("id") Long id, Principal principal) {
+        SiteUserDto siteUser = siteUserService.getSiteUser(principal.getName());
+        questionService.vote(id, siteUser);
+        return String.format("redirect:/question/detail/%s", id);
     }
 }
