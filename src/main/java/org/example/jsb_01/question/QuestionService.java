@@ -33,4 +33,11 @@ public class QuestionService {
         questionRepository.save(Question.create(subject, content, SiteUserDto.fromDto(siteUserDto)));
     }
 
+    public void modifyQuestion(QuestionDto questionDto, QuestionForm questionForm) {
+        // 나중에 dto를 entity로 변환하는 메서드를 작성해보자. 지금은 헷갈려서 못하겠다.
+        Question question = questionRepository.findById(questionDto.getId())
+            .orElseThrow(() -> new DataNotFoundException("question not fount"));
+        questionRepository.save(question.update(questionForm));
+    }
+
 }

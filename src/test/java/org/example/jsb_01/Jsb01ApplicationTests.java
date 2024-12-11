@@ -11,6 +11,9 @@ import org.example.jsb_01.answer.Answer;
 import org.example.jsb_01.answer.AnswerRepository;
 import org.example.jsb_01.question.Question;
 import org.example.jsb_01.question.QuestionRepository;
+import org.example.jsb_01.question.QuestionService;
+import org.example.jsb_01.user.SiteUser;
+import org.example.jsb_01.user.SiteUserDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,9 @@ class Jsb01ApplicationTests {
 
 	@Autowired
 	private AnswerRepository answerRepository;
+
+    @Autowired
+    private QuestionService questionService;
 
 	@Test
 	@Transactional
@@ -287,16 +293,15 @@ class Jsb01ApplicationTests {
 		});
 	}
 
-//	@Test
-//	@DisplayName("테스트용 더미 데이터 300개 생성")
-//	void test11() {
-//		SiteUser siteUser = SiteUser.create("dummy", "dummy", "dummy@gamil.com");
-//		siteUserRepository.save(siteUser);
-//
-//		for (int i = 1; i <= 300; i++) {
-//			String subject = String.format("테스트 데이터입니다.:[%03d]", i);
-//			questionService.createQuestion(subject, "테스트용", SiteUserDto.toDto(siteUser));
-//		}
-//	}
+	@Test
+	@DisplayName("테스트용 더미 데이터 300개 생성")
+	void test11() {
+		SiteUser siteUser = SiteUser.create("dummy", "dummy", "dummy@gamil.com");
+
+		for (int i = 1; i <= 300; i++) {
+			String subject = String.format("테스트 데이터입니다.:[%03d]", i);
+			questionService.createQuestion(subject, "테스트용", SiteUserDto.toDto(siteUser));
+		}
+	}
 
 }

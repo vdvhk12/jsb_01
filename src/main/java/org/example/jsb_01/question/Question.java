@@ -40,6 +40,8 @@ public class Question {
 
     private LocalDateTime createDate;
 
+    private LocalDateTime updateDate;
+
     @ManyToOne
     private SiteUser author;
 
@@ -53,6 +55,18 @@ public class Question {
             .createDate(LocalDateTime.now())
             .author(siteUser)
             .answerList(new ArrayList<>())
+            .build();
+    }
+
+    public Question update(QuestionForm questionForm) {
+        return Question.builder()
+            .id(this.id)
+            .subject(questionForm.getSubject())
+            .content(questionForm.getContent())
+            .createDate(this.createDate)
+            .updateDate(LocalDateTime.now())
+            .author(this.author)
+            .answerList(this.answerList)
             .build();
     }
 }
