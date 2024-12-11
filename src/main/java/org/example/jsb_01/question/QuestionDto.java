@@ -17,6 +17,7 @@ public class QuestionDto {
     private String subject;
     private String content;
     private LocalDateTime createDate;
+    private LocalDateTime modifyDate;
     private SiteUserDto author;
     private List<AnswerDto> answerList;
 
@@ -27,6 +28,7 @@ public class QuestionDto {
             .subject(question.getSubject())
             .content(question.getContent())
             .createDate(question.getCreateDate())
+            .modifyDate(question.getModifyDate())
             .author(SiteUserDto.toDto(question.getAuthor()))
             .answerList(question.getAnswerList().stream()
                 .map(AnswerDto::toDto)

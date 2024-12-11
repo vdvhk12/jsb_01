@@ -14,6 +14,7 @@ public class AnswerDto {
     private Long id;
     private String content;
     private LocalDateTime createDate;
+    private LocalDateTime modifyDate;
     private SiteUserDto author;
     private Long questionId;
 
@@ -22,6 +23,7 @@ public class AnswerDto {
             .id(answer.getId())
             .content(answer.getContent())
             .createDate(answer.getCreateDate())
+            .modifyDate(answer.getModifyDate())
             .author(SiteUserDto.toDto(answer.getAuthor()))
             .questionId(answer.getQuestion().getId())
             .build();
