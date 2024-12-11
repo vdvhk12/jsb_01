@@ -40,7 +40,7 @@ public class Question {
 
     private LocalDateTime createDate;
 
-    private LocalDateTime updateDate;
+    private LocalDateTime modifyDate;
 
     @ManyToOne
     private SiteUser author;
@@ -64,7 +64,7 @@ public class Question {
             .subject(questionForm.getSubject())
             .content(questionForm.getContent())
             .createDate(this.createDate)
-            .updateDate(LocalDateTime.now())
+            .modifyDate(LocalDateTime.now())
             .author(this.author)
             .answerList(this.answerList)
             .build();

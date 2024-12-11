@@ -33,7 +33,7 @@ public class Answer {
 
     private LocalDateTime createDate;
 
-    private LocalDateTime updateDate;
+    private LocalDateTime modifyDate;
 
     @ManyToOne
     private SiteUser author;
@@ -47,6 +47,17 @@ public class Answer {
             .createDate(LocalDateTime.now())
             .question(question)
             .author(author)
+            .build();
+    }
+
+    public Answer modify(String content) {
+        return Answer.builder()
+            .id(this.id)
+            .content(content)
+            .createDate(this.createDate)
+            .modifyDate(LocalDateTime.now())
+            .author(this.author)
+            .question(this.question)
             .build();
     }
 }
