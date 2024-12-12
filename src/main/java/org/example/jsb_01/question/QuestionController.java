@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.example.jsb_01.answer.AnswerForm;
-import org.example.jsb_01.user.SiteUser;
 import org.example.jsb_01.user.SiteUserDto;
 import org.example.jsb_01.user.SiteUserService;
 import org.springframework.data.domain.Page;
@@ -29,8 +28,9 @@ public class QuestionController {
     private final SiteUserService siteUserService;
 
     @GetMapping("/list")
-    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
-        Page<QuestionDto> paging = questionService.getList(page);
+    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+        @RequestParam(value = "kw", defaultValue = "") String kw) {
+        Page<QuestionDto> paging = questionService.getList(page, kw);
         model.addAttribute("paging", paging);
         return "question_list";
     }
